@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KCVDB.Client", "KCVDB.Client.csproj", "{08123755-B70F-4B52-8208-3B9AB7B5952B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KCVDB.Client", "KCVDB.Client\KCVDB.Client.csproj", "{08123755-B70F-4B52-8208-3B9AB7B5952B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KCVDB.TestClient", "..\KCVDB.TestClient\KCVDB.TestClient.csproj", "{A162B0E4-5A15-44D2-8E46-E7C4160C4F7A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KCVDB.TestClient", "KCVDB.TestClient\KCVDB.TestClient.csproj", "{A162B0E4-5A15-44D2-8E46-E7C4160C4F7A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

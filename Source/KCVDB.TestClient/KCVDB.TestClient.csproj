@@ -49,7 +49,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Source\KCVDB.Client.csproj">
+    <ProjectReference Include="..\KCVDB.Client\KCVDB.Client.csproj">
       <Project>{08123755-b70f-4b52-8208-3b9ab7b5952b}</Project>
       <Name>KCVDB.Client</Name>
     </ProjectReference>
