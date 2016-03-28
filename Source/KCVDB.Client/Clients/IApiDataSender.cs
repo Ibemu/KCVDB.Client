@@ -5,6 +5,6 @@ namespace KCVDB.Client.Clients
 {
 	interface IApiDataSender : IDisposable
 	{
-		Task SendData(ApiData data);
+		Task<string> SendData(ApiData data);
 	}
 }
