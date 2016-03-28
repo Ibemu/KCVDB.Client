@@ -32,7 +32,7 @@ namespace KCVDB.Client.Clients
 			HttpClient = new HttpClient();
 		}
 
-		public async Task SendData(ApiData data)
+		public async Task<string> SendData(ApiData data)
 		{
 			if (data == null) { throw new ArgumentNullException(nameof(data)); }
 
@@ -71,6 +71,8 @@ namespace KCVDB.Client.Clients
 						: SendingErrorReason.NetworkError
 					);
 			}
+
+			return contentString;
 		}
 
 		#region IDisposable member

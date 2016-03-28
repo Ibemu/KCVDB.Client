@@ -21,8 +21,8 @@ namespace KCVDB.Client
 			string dateHeaderValue,
 			Guid? trackingId = null);
 
-		event EventHandler<ApiDataSendEventArgs> ApiDataSending;
-		event EventHandler<ApiDataSendEventArgs> ApiDataSent;
+		event EventHandler<ApiDataSendingEventArgs> ApiDataSending;
+		event EventHandler<ApiDataSentEventArgs> ApiDataSent;
 		event EventHandler<FatalErrorEventArgs> FatalError;
 		event EventHandler<InternalErrorEventArgs> InternalError;
 		event EventHandler<SendingErrorEventArgs> SendingError;

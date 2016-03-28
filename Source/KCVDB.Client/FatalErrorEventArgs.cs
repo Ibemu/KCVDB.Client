@@ -2,7 +2,7 @@
 
 namespace KCVDB.Client
 {
-	public class FatalErrorEventArgs : EventArgs
+	public sealed class FatalErrorEventArgs : EventArgs
 	{
 		public FatalErrorEventArgs(
 			string message,

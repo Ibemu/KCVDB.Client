@@ -2,7 +2,7 @@
 
 namespace KCVDB.Client
 {
-	public class SendingErrorEventArgs : EventArgs
+	public sealed class SendingErrorEventArgs : EventArgs
 	{
 		public SendingErrorEventArgs(
 			Guid trackingId,

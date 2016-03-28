@@ -2,9 +2,9 @@
 
 namespace KCVDB.Client
 {
-	public class ApiDataSendEventArgs : EventArgs
+	public sealed class ApiDataSendingEventArgs : EventArgs
 	{
-		public ApiDataSendEventArgs(
+		public ApiDataSendingEventArgs(
 			Guid trackingId,
 			ApiData apiData)
 		{

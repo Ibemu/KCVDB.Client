@@ -41,7 +41,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApiData.cs" />
-    <Compile Include="ApiDataSendEventArgs.cs" />
+    <Compile Include="ApiDataSendingEventArgs.cs" />
+    <Compile Include="ApiDataSentEventArgs.cs" />
     <Compile Include="Clients\ApiDataSender.cs" />
     <Compile Include="Clients\ApiParser.cs" />
     <Compile Include="Clients\HttpSatusCodeExtension.cs" />
@@ -49,6 +50,7 @@
     <Compile Include="Clients\IApiParser.cs" />
     <Compile Include="Clients\ImmediatelyKCVDBClient.cs" />
     <Compile Include="Clients\QueueingKCVDBClient.cs" />
+    <Compile Include="DataMemberAttribute.cs" />
     <Compile Include="Exceptions.cs" />
     <Compile Include="FatalErrorEventArgs.cs" />
     <Compile Include="IKCVDBClient.cs" />

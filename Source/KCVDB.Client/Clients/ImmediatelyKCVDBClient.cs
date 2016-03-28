@@ -43,9 +43,9 @@ namespace KCVDB.Client.Clients
 			}
 
 			try {
-				this.ApiDataSending?.Invoke(this, new ApiDataSendEventArgs(actualTrackingId, data));
-				await DataSender.SendData(data);
-				this.ApiDataSent?.Invoke(this, new ApiDataSendEventArgs(actualTrackingId, data));
+				this.ApiDataSending?.Invoke(this, new ApiDataSendingEventArgs(actualTrackingId, data));
+				var contentString = await DataSender.SendData(data);
+				this.ApiDataSent?.Invoke(this, new ApiDataSentEventArgs(actualTrackingId, data, contentString));
 			}
 			catch (DataSendingException ex) {
 				this.SendingError?.Invoke(this, new SendingErrorEventArgs(actualTrackingId, "Failed sending API data.", data, ex));
@@ -60,8 +60,8 @@ namespace KCVDB.Client.Clients
 		}
 
 
-		public event EventHandler<ApiDataSendEventArgs> ApiDataSending;
-		public event EventHandler<ApiDataSendEventArgs> ApiDataSent;
+		public event EventHandler<ApiDataSendingEventArgs> ApiDataSending;
+		public event EventHandler<ApiDataSentEventArgs> ApiDataSent;
 		public event EventHandler<SendingErrorEventArgs> SendingError;
 		public event EventHandler<InternalErrorEventArgs> InternalError;
 		public event EventHandler<FatalErrorEventArgs> FatalError;

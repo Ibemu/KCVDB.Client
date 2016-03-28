@@ -146,9 +146,9 @@ namespace KCVDB.Client.Clients
 					var trackingId = item.TrackingId;
 
 					try {
-						this.ApiDataSending?.Invoke(this, new ApiDataSendEventArgs(trackingId, data));
-						await DataSender.SendData(data);
-						this.ApiDataSent?.Invoke(this, new ApiDataSendEventArgs(trackingId, data));
+						this.ApiDataSending?.Invoke(this, new ApiDataSendingEventArgs(trackingId, data));
+						var contentString = await DataSender.SendData(data);
+						this.ApiDataSent?.Invoke(this, new ApiDataSentEventArgs(trackingId, data, contentString));
 
 					}
 					catch (DataSendingException ex) {
@@ -184,8 +184,8 @@ namespace KCVDB.Client.Clients
 			}
 		}
 
-		public event EventHandler<ApiDataSendEventArgs> ApiDataSending;
-		public event EventHandler<ApiDataSendEventArgs> ApiDataSent;
+		public event EventHandler<ApiDataSendingEventArgs> ApiDataSending;
+		public event EventHandler<ApiDataSentEventArgs> ApiDataSent;
 		public event EventHandler<InternalErrorEventArgs> InternalError;
 		public event EventHandler<SendingErrorEventArgs> SendingError;
 		public event EventHandler<FatalErrorEventArgs> FatalError;
