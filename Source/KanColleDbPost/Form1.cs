@@ -97,9 +97,10 @@ namespace KanColleDbPost
 		{
 			if (!isCapture)
 			{
-				FiddlerApplication.Startup(8877, FiddlerCoreStartupFlags.ChainToUpstreamGateway | FiddlerCoreStartupFlags.RegisterAsSystemProxy | FiddlerCoreStartupFlags.OptimizeThreadPool | FiddlerCoreStartupFlags.MonitorAllConnections);
+				int iListenPort = 8877;
+				FiddlerApplication.Startup(iListenPort, FiddlerCoreStartupFlags.ChainToUpstreamGateway | FiddlerCoreStartupFlags.RegisterAsSystemProxy | FiddlerCoreStartupFlags.OptimizeThreadPool | FiddlerCoreStartupFlags.MonitorAllConnections);
 				isCapture = true;
-				AppendText("----- Capture start\n");
+				AppendText(string.Format("----- Capture start. Port {0}\n", iListenPort));
 				button1.Text = "停止";
 			}
 			else
