@@ -52,66 +52,6 @@ namespace KanColleDbPost
 			this.client.Dispose();
 		}
 
-		public enum UrlType
-		{
-			PORT,
-			SHIP2,
-			SHIP3,
-			SLOT_ITEM,
-			KDOCK,
-			MAPINFO,
-			CHANGE,
-			CREATESHIP,
-			GETSHIP,
-			CREATEITEM,
-			START,
-			NEXT,
-			SELECT_EVENTMAP_RANK,
-			BATTLE,
-			BATTLE_MIDNIGHT,
-			BATTLE_SP_MIDNIGHT,
-			BATTLE_NIGHT_TO_DAY,
-			BATTLERESULT,
-			COMBINED_BATTLE,
-			COMBINED_BATTLE_AIR,
-			COMBINED_BATTLE_MIDNIGHT,
-			COMBINED_BATTLE_RESULT,
-			AIRBATTLE,
-			COMBINED_BATTLE_WATER,
-			COMBINED_BATTLE_SP_MIDNIGHT,
-			//MASTER,
-		};
-
-		public Dictionary<UrlType, string> urls = new Dictionary<UrlType, string>()
-        {
-            { UrlType.PORT,                     "api_port/port"                       },
-            { UrlType.SHIP2,                    "api_get_member/ship2"                },
-            { UrlType.SHIP3,                    "api_get_member/ship3"                },
-            { UrlType.SLOT_ITEM,                "api_get_member/slot_item"            },
-            { UrlType.KDOCK,                    "api_get_member/kdock"                },
-            { UrlType.MAPINFO,                  "api_get_member/mapinfo"              },
-            { UrlType.CHANGE,                   "api_req_hensei/change"               },
-            { UrlType.CREATESHIP,               "api_req_kousyou/createship"          },
-            { UrlType.GETSHIP,                  "api_req_kousyou/getship"             },
-            { UrlType.CREATEITEM,               "api_req_kousyou/createitem"          },
-            { UrlType.START,                    "api_req_map/start"                   },
-            { UrlType.NEXT,                     "api_req_map/next"                    },
-			{ UrlType.SELECT_EVENTMAP_RANK,     "api_req_map/select_eventmap_rank"    }, 
-            { UrlType.BATTLE,                   "api_req_sortie/battle"               },
-            { UrlType.BATTLE_MIDNIGHT,          "api_req_battle_midnight/battle"      },
-            { UrlType.BATTLE_SP_MIDNIGHT,       "api_req_battle_midnight/sp_midnight" },
-            { UrlType.BATTLE_NIGHT_TO_DAY,      "api_req_sortie/night_to_day"         },
-            { UrlType.BATTLERESULT,             "api_req_sortie/battleresult"         },
-            { UrlType.COMBINED_BATTLE,          "api_req_combined_battle/battle"      },
-            { UrlType.COMBINED_BATTLE_AIR,      "api_req_combined_battle/airbattle"   },
-            { UrlType.COMBINED_BATTLE_MIDNIGHT, "api_req_combined_battle/midnight_battle"},
-            { UrlType.COMBINED_BATTLE_RESULT,   "api_req_combined_battle/battleresult"},
-            { UrlType.AIRBATTLE,                "api_req_sortie/airbattle"            },
-            { UrlType.COMBINED_BATTLE_WATER,    "api_req_combined_battle/battle_water"},
-            { UrlType.COMBINED_BATTLE_SP_MIDNIGHT,"api_req_combined_battle/sp_midnight"},
-			//{ UrlType.MASTER,                   "api_start2"                          },
-        };
-
 		private bool isCapture = false;
 
 		void FiddlerApplication_AfterSessionComplete(Session oSession)
@@ -122,20 +62,13 @@ namespace KanColleDbPost
 				Task.Factory.StartNew(() =>
 				{
 					string url = oSession.fullUrl;
-					foreach (KeyValuePair<UrlType, string> kvp in urls)
-					{
-						if (url.IndexOf(kvp.Value) > 0)
-						{
-							string responseBody = oSession.GetResponseBodyAsString();
-							responseBody.Replace("svdata=", "");
+					string responseBody = oSession.GetResponseBodyAsString();
+					responseBody.Replace("svdata=", "");
 
-							string str = "Post server from " + url + "\n";
-							AppendText(str);
+					string str = "Post server from " + url + "\n";
+					AppendText(str);
 
-							PostServer(oSession);
-							return;
-						}
-					}
+					PostServer(oSession);
 					if (checkBox1.Checked)
 					{
 						AppendText(url + "\n");
