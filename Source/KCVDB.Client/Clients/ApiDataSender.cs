@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,6 +19,8 @@ namespace KCVDB.Client.Clients
 		public Uri BaseUri { get; }
 		public HttpClient HttpClient { get; }
 
+		private KancolleApiSendModelSerializer serializer;
+
 		public ApiDataSender(
 			Uri baseUri,
 			string agentId,
@@ -28,11 +32,12 @@ namespace KCVDB.Client.Clients
 			BaseUri = baseUri;
 			AgentId = agentId;
 			SessionId = sessionId;
+			serializer = new KancolleApiSendModelSerializer(SessionId, AgentId);
 
 			HttpClient = new HttpClient();
 		}
 
-		public async Task<string> SendData(ApiData data)
+		public async Task<byte[]> SendData(ApiData data)
 		{
 			if (data == null) { throw new ArgumentNullException(nameof(data)); }
 
@@ -41,38 +46,31 @@ namespace KCVDB.Client.Clients
 			uriBuilder.Path = SendSingleDataRequestPath;
 			var requestUri = uriBuilder.Uri;
 
-			// Create content
-			var parameters = new Dictionary<string, string> {
-				["LoginSessionId"] = SessionId,
-				["AgentId"] = AgentId,
-				["Path"] = data.RequestUri.AbsoluteUri,
-				["RequestValue"] = data.RequestBody,
-				["ResponseValue"] = data.ResponseBody,
-				["StatusCode"] = data.StatusCode.ToString(),
-				["HttpDate"] = data.HttpDateHeaderValue,
-				["LocalTime"] = data.ReceivedLocalTime.UtcDateTime.ToString("r"),
-			};
-			var contentString = string.Join("&", parameters.Select(x => string.Format("{0}={1}", WebUtility.UrlEncode(x.Key), WebUtility.UrlEncode(x.Value))));
-			var content = new StringContent(contentString, Encoding.UTF8, "application/x-www-form-urlencoded");
+			using (var stream = new MemoryStream()) {
+				serializer.Serialize(stream, data);
+				//using (var content = new StreamContent(stream)) {
+				//	content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
 
-			try {
-				using (var response = await HttpClient.PostAsync(requestUri, content)) {
-					if (!response.IsSuccessStatusCode) {
-						throw new HttpSendingFailureException(response.StatusCode, response.StatusCode.IsServerError() ? SendingErrorReason.ServerError : SendingErrorReason.HttpProtocolError);
-					}
-				}
+				//	try {
+				//		using (var response = await HttpClient.PostAsync(requestUri, content)) {
+				//			if (!response.IsSuccessStatusCode) {
+				//				throw new HttpSendingFailureException(response.StatusCode, response.StatusCode.IsServerError() ? SendingErrorReason.ServerError : SendingErrorReason.HttpProtocolError);
+				//			}
+				//		}
+				//	}
+				//	catch (WebException ex) {
+				//		throw new HttpSendingFailureException(ex,
+				//			ex.Status == WebExceptionStatus.ProtocolError
+				//				? (ex.Response as HttpWebResponse)?.StatusCode.IsServerError() == true
+				//					? SendingErrorReason.ServerError
+				//					: SendingErrorReason.HttpProtocolError
+				//				: SendingErrorReason.NetworkError
+				//			);
+				//	}
+				//}
+				await Task.Delay(1);
+				return stream.ToArray();
 			}
-			catch (WebException ex) {
-				throw new HttpSendingFailureException(ex,
-					ex.Status == WebExceptionStatus.ProtocolError
-						? (ex.Response as HttpWebResponse)?.StatusCode.IsServerError() == true
-							? SendingErrorReason.ServerError
-							: SendingErrorReason.HttpProtocolError
-						: SendingErrorReason.NetworkError
-					);
-			}
-
-			return contentString;
 		}
 
 		#region IDisposable member
