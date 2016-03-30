@@ -8,12 +8,14 @@ namespace KCVDB.Client.Clients.Senders
 {
 	public interface ISentApiData
 	{
-		int ByteCount { get; }
+		int RequestBodyByteCount { get; }
 
-		string ToString();
+		string RequestBodyString { get; }
 
-		byte[] ToByteArray();
+		byte[] RequestBodyByteArray { get; }
 
-		SentApiDataBehavior Behavior { get; }
+		SentApiDataRequestBodyFlags RequestBodyFlags { get; }
+
+		ApiDataSenderType SenderType { get; }
 	}
 }

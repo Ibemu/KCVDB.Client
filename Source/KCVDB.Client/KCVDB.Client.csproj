@@ -52,7 +52,8 @@
     <Compile Include="Clients\Senders\Diff\DiffSentApiData.cs" />
     <Compile Include="Clients\Senders\Diff\FastDiff.cs" />
     <Compile Include="Clients\Senders\Raw\RawSentApiData.cs" />
-    <Compile Include="Clients\Senders\SentApiDataBehavior.cs" />
+    <Compile Include="Clients\Senders\SentApiDataRequestBodyFlags.cs" />
+    <Compile Include="Clients\Senders\ApiDataSenderType.cs" />
     <Compile Include="Clients\Senders\ISentApiData.cs" />
     <Compile Include="Clients\KancolleApiSendModel.cs" />
     <Compile Include="Clients\Senders\Diff\DiffApiSender.cs" />

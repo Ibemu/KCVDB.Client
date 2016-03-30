@@ -8,7 +8,7 @@ namespace KCVDB.Client.Clients.Senders.Diff
 {
 	sealed class DiffSentApiData : ISentApiData
 	{
-		public int ByteCount
+		public int RequestBodyByteCount
 		{
 			get
 			{
@@ -16,22 +16,36 @@ namespace KCVDB.Client.Clients.Senders.Diff
 			}
 		}
 
-		public SentApiDataBehavior Behavior
+		public ApiDataSenderType SenderType
 		{
 			get
 			{
-				return SentApiDataBehavior.Application_OctetStream;
+				return ApiDataSenderType.Application_OctetStream;
 			}
 		}
 
-		public byte[] ToByteArray()
+		public byte[] RequestBodyByteArray
 		{
-			return this.contentByteArray;
+			get
+			{
+				return this.contentByteArray;
+			}
 		}
 
-		public override string ToString()
+		public string RequestBodyString
 		{
-			return base.ToString();
+			get
+			{
+				throw new NotSupportedException();
+			}
+		}
+
+		public SentApiDataRequestBodyFlags RequestBodyFlags
+		{
+			get
+			{
+				return SentApiDataRequestBodyFlags.ByteArray;
+			}
 		}
 
 		public DiffSentApiData(byte[] contentByteArray)

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace KCVDB.Client.Clients.Senders
 {
-	public enum SentApiDataBehavior
+	public enum ApiDataSenderType
 	{
 		Application_XWwwFormUrlEncorded = 1,
 		Multipart_FormData,

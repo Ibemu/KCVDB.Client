@@ -8,7 +8,7 @@ namespace KCVDB.Client.Clients.Senders.Raw
 {
 	sealed class RawSentApiData : ISentApiData
 	{
-		public int ByteCount
+		public int RequestBodyByteCount
 		{
 			get
 			{
@@ -16,22 +16,36 @@ namespace KCVDB.Client.Clients.Senders.Raw
 			}
 		}
 
-		public SentApiDataBehavior Behavior
+		public ApiDataSenderType SenderType
 		{
 			get
 			{
-				return SentApiDataBehavior.Application_XWwwFormUrlEncorded;
+				return ApiDataSenderType.Application_XWwwFormUrlEncorded;
 			}
 		}
 
-		public byte[] ToByteArray()
+		public byte[] RequestBodyByteArray
 		{
-			return Encoding.UTF8.GetBytes(this.contentString);
+			get
+			{
+				return Encoding.UTF8.GetBytes(this.contentString);
+			}
 		}
 
-		public override string ToString()
+		public string RequestBodyString
 		{
-			return this.contentString;
+			get
+			{
+				return this.contentString;
+			}
+		}
+
+		public SentApiDataRequestBodyFlags RequestBodyFlags
+		{
+			get
+			{
+				return SentApiDataRequestBodyFlags.String | SentApiDataRequestBodyFlags.ByteArray;
+			}
 		}
 
 		public RawSentApiData(string contentString)
