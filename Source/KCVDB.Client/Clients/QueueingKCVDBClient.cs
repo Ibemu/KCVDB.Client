@@ -85,7 +85,7 @@ namespace KCVDB.Client.Clients
 				}
 			}
 			catch (Exception ex) {
-				this.InternalError?.Invoke(this, new InternalErrorEventArgs(actualTrackingId, "Failed to trigger sending or creating new therad.", ex, apiData));
+				this.InternalError?.Invoke(this, new InternalErrorEventArgs(actualTrackingId, "Failed to trigger sending or creating new thread.", ex, apiData));
 			}
 
 			return Task.FromResult(actualTrackingId);
