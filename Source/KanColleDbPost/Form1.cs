@@ -26,8 +26,8 @@ namespace KanColleDbPost
 			this.deserializer = new ApiDataDeserializer();
 			Observable
 				.Zip(
-					FiddlerApplication_AfterSessionComplete(),
-					IKCVDBClient_ApiDataSent(),
+					FromAfterSessionComplete(),
+					FromApiDataSent(),
 					(first, second) => Enumerable.Concat(first, second))
 				.Subscribe(texts => {
 					foreach (var text in texts) {
@@ -54,7 +54,7 @@ namespace KanColleDbPost
 		private IKCVDBClient client;
 		private ApiDataDeserializer deserializer;
 
-		private IObservable<string[]> FiddlerApplication_AfterSessionComplete()
+		private IObservable<string[]> FromAfterSessionComplete()
 		{
 			return Observable
 				.FromEvent<SessionStateHandler, Session>(
@@ -88,7 +88,7 @@ namespace KanColleDbPost
 			this.client.SendRequestDataAsync(new Uri(url), oSession.ResponseHeaders.HTTPResponseCode, requestBody, responseBody, oSession.ResponseHeaders["Date"]);
 		}
 
-		private IObservable<string[]> IKCVDBClient_ApiDataSent()
+		private IObservable<string[]> FromApiDataSent()
 		{
 			return Observable
 				.FromEvent<EventHandler<ApiDataSentEventArgs>, ApiDataSentEventArgs>(

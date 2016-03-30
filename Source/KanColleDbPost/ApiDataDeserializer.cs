@@ -23,8 +23,8 @@ namespace KanColleDbPost
 						this.sumOriginalRequestByteCount += originalRequestByteCount;
 						double originalResponseByteCount = Encoding.UTF8.GetByteCount(sourceData.ResponseBody);
 						this.sumOriginalResponseByteCount += originalResponseByteCount;
-						double originalByteCount = originalRequestByteCount + originalResponseByteCount;
-						double sumOriginalByteCount = this.sumOriginalRequestByteCount + this.sumOriginalResponseByteCount;
+						var originalByteCount = originalRequestByteCount + originalResponseByteCount;
+						var sumOriginalByteCount = this.sumOriginalRequestByteCount + this.sumOriginalResponseByteCount;
 						double modifiedRequestByteCount;
 						using (var modifiedRequestStream = new MemoryStream()) {
 							Serializer.Serialize(modifiedRequestStream, sendModel.RequestValuePatches);
@@ -37,8 +37,8 @@ namespace KanColleDbPost
 							modifiedResponseByteCount = modifiedResponseStream.Length;
 						}
 						this.sumModifiedResponseByteCount += modifiedResponseByteCount;
-						double modifiedByteCount = modifiedRequestByteCount + modifiedResponseByteCount;
-						double sumModifiedByteCount = this.sumModifiedRequestByteCount + this.sumModifiedResponseByteCount;
+						var modifiedByteCount = modifiedRequestByteCount + modifiedResponseByteCount;
+						var sumModifiedByteCount = this.sumModifiedRequestByteCount + this.sumModifiedResponseByteCount;
 						return new[] {
 							string.Format(
 								"Req:  {0,7} -> {1,7}, {2,7:0.00%}: {3,9} -> {4,9}, {5,7:0.00%}",
@@ -75,8 +75,8 @@ namespace KanColleDbPost
 
 		private ApiData ToApiData(KancolleApiSendModel sendModel)
 		{
-			string previousRequestBody = "";
-			string previousResponseBody = "";
+			var previousRequestBody = "";
+			var previousResponseBody = "";
 			ApiData previousData;
 			if (this.items.TryGetValue(sendModel.Path, out previousData)) {
 				previousRequestBody = previousData.RequestBody;

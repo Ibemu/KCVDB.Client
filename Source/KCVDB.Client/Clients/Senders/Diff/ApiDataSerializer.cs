@@ -15,8 +15,8 @@ namespace KCVDB.Client.Clients.Senders.Diff
 		public void Serialize(Stream stream, ApiData data)
 		{
 			var path = data.RequestUri.AbsoluteUri;
-			string previousRequestBody = "";
-			string previousResponseBody = "";
+			var previousRequestBody = "";
+			var previousResponseBody = "";
 			ApiData previousData;
 			if (this.dataDictionary.TryGetValue(path, out previousData)) {
 				previousRequestBody = previousData.RequestBody;
