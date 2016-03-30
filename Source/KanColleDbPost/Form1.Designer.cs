@@ -46,6 +46,9 @@
 			// 
 			this.textBox1.AcceptsReturn = true;
 			this.textBox1.AcceptsTab = true;
+			this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.textBox1.Font = new System.Drawing.Font("ＭＳ ゴシック", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.textBox1.Location = new System.Drawing.Point(0, 0);
 			this.textBox1.Multiline = true;
@@ -58,6 +61,7 @@
 			// 
 			// button1
 			// 
+			this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.button1.Location = new System.Drawing.Point(588, 12);
 			this.button1.Name = "button1";
 			this.button1.Size = new System.Drawing.Size(75, 23);
@@ -68,6 +72,7 @@
 			// 
 			// label1
 			// 
+			this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.label1.AutoSize = true;
 			this.label1.Location = new System.Drawing.Point(12, 262);
 			this.label1.Name = "label1";
@@ -77,6 +82,7 @@
 			// 
 			// checkBox1
 			// 
+			this.checkBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.checkBox1.AutoSize = true;
 			this.checkBox1.Location = new System.Drawing.Point(607, 262);
 			this.checkBox1.Name = "checkBox1";
@@ -98,24 +104,26 @@
             this.toolStripMenuItem1,
             this.toolStripMenuItem2});
 			this.contextMenuStrip1.Name = "contextMenuStrip1";
-			this.contextMenuStrip1.Size = new System.Drawing.Size(191, 48);
+			this.contextMenuStrip1.Size = new System.Drawing.Size(163, 48);
 			// 
 			// toolStripMenuItem1
 			// 
 			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-			this.toolStripMenuItem1.Size = new System.Drawing.Size(190, 22);
+			this.toolStripMenuItem1.Size = new System.Drawing.Size(162, 22);
 			this.toolStripMenuItem1.Text = "ウィンドウを表示(&S)";
 			this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
 			// 
 			// toolStripMenuItem2
 			// 
 			this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-			this.toolStripMenuItem2.Size = new System.Drawing.Size(190, 22);
+			this.toolStripMenuItem2.Size = new System.Drawing.Size(162, 22);
 			this.toolStripMenuItem2.Text = "終了(&X)";
 			this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
 			// 
 			// textBox2
 			// 
+			this.textBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.textBox2.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::KanColleDbPost.Properties.Settings.Default, "AccessKey", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
 			this.textBox2.Location = new System.Drawing.Point(77, 259);
 			this.textBox2.MaxLength = 27;
