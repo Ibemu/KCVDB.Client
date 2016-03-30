@@ -201,7 +201,7 @@ namespace KCVDB.Client.Clients.Senders.Diff
 
 				cs = cs.Next;
 			}
-			return list;
+			return CompressDiff(list, dataA, dataB);
 		}
 
 		/// <summary>結果出力</summary>
@@ -232,7 +232,43 @@ namespace KCVDB.Client.Clients.Senders.Diff
 
 				cs = cs.Next;
 			}
-			return list;
+			return CompressDiff(list, dataB, dataA);
+		}
+
+		private static IList<DiffResult> CompressDiff( List<DiffResult> list, string textA, string textB )
+		{
+			if ( list.Count >= 1 )
+			{
+				List<DiffResult> compressedList = new List<DiffResult>( list.Count );
+				var first = list[ 0 ];
+				compressedList.Add( first );
+				for ( var i = 1; i < list.Count; ++i )
+				{
+					var second = list[ i ];
+					var firstStart = first.OriginalStart;
+					var firstEnd = first.OriginalStart + first.OriginalLength;
+					var secondStart = second.OriginalStart;
+					var secondEnd = second.OriginalStart + second.OriginalLength;
+					if ( secondStart - firstEnd <= 6 )
+					{
+						first = new DiffResult(
+							firstStart,
+							secondEnd - firstStart,
+							first.Modified + textA.Substring( firstEnd, secondStart - firstEnd ) + second.Modified );
+						compressedList[ compressedList.Count - 1 ] = first;
+					}
+					else
+					{
+						first = second;
+						compressedList.Add( first );
+					}
+				}
+				return compressedList;
+			}
+			else
+			{
+				return list;
+			}
 		}
 
 		private struct Snake
