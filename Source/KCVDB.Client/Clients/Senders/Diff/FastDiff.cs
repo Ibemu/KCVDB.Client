@@ -29,7 +29,7 @@ namespace KCVDB.Client.Clients.Senders.Diff
 		public override string ToString()
 		{
 			return "OrgStart:" + this.OriginalStart + ", OrgLen:" + this.OriginalLength
-				+ ", ModLen:" + this.Modified.Length;
+				+ ", Mod:" + this.Modified;
 		}
 	}
 
