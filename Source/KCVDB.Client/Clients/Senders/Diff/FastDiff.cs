@@ -77,8 +77,10 @@ namespace KCVDB.Client.Clients.Senders.Diff
 
 		private static IList<DiffResult> StringNullOrEmpty( string textA, string textB )
 		{
-			int lengthA = textA?.Length ?? 0;
-			int lengthB = textB?.Length ?? 0;
+			textA = textA ?? "";
+			textB = textB ?? "";
+			int lengthA = textA.Length;
+			int lengthB = textB.Length;
 			return PresentDiff( new CommonSubsequence( lengthA, lengthB, 0, null ), textA, textB );
 		}
 
