@@ -72,7 +72,10 @@ namespace KCVDB.Client.Clients.Senders.Raw
 					);
 			}
 
-			return new RawSentApiData(contentString);
+			return new RawSentApiData(
+				contentString,
+				"application/x-www-form-urlencoded",
+				Encoding.UTF8);
 		}
 
 		#region IDisposable member

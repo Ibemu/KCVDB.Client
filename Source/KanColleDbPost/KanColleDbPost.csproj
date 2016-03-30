@@ -137,6 +137,10 @@
     <Content Include="favicon.ico" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\KCVDB.Client.DiffSender\KCVDB.Client.DiffSender.csproj">
+      <Project>{2c2c0fa8-9ddd-4247-9832-80157c52825d}</Project>
+      <Name>KCVDB.Client.DiffSender</Name>
+    </ProjectReference>
     <ProjectReference Include="..\KCVDB.Client\KCVDB.Client.csproj">
       <Project>{08123755-b70f-4b52-8208-3b9ab7b5952b}</Project>
       <Name>KCVDB.Client</Name>
