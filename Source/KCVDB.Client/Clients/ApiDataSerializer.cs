@@ -1,4 +1,5 @@
-﻿using ProtoBuf;
+﻿using KCVDB.Client.Clients.Senders.Diff;
+using ProtoBuf;
 using System.Collections.Generic;
 using System.IO;
 
@@ -26,8 +27,8 @@ namespace KCVDB.Client.Clients
 				LoginSessionId = this.sessionId,
 				AgentId = this.agentId,
 				Path = path,
-				RequestValuePatches = FastDiff.FastDiff.DiffChar(previousRequestBody, data.RequestBody),
-				ResponseValuePatches = FastDiff.FastDiff.DiffChar(previousResponseBody, data.ResponseBody),
+				RequestValuePatches = FastDiff.DiffChar(previousRequestBody, data.RequestBody),
+				ResponseValuePatches = FastDiff.DiffChar(previousResponseBody, data.ResponseBody),
 				StatusCode = data.StatusCode,
 				HttpDate = data.HttpDateHeaderValue,
 				LocalTime = data.ReceivedLocalTime.UtcDateTime.ToString("r"),

@@ -1,4 +1,4 @@
-﻿using FastDiff;
+﻿using KCVDB.Client.Clients.Senders.Diff;
 using ProtoBuf;
 using System.Collections.Generic;
 using System.IO;

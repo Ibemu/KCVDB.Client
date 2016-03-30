@@ -51,6 +51,7 @@
     <Compile Include="Clients\ApiDataSerializer.cs" />
     <Compile Include="Clients\ApiParser.cs" />
     <Compile Include="Clients\Senders\Diff\DiffSentApiData.cs" />
+    <Compile Include="Clients\Senders\Diff\FastDiff.cs" />
     <Compile Include="Clients\Senders\Raw\RawSentApiData.cs" />
     <Compile Include="Clients\Senders\SentApiDataBehavior.cs" />
     <Compile Include="Clients\Senders\ISentApiData.cs" />
@@ -58,7 +59,6 @@
     <Compile Include="Clients\Senders\Diff\DiffApiSender.cs" />
     <Compile Include="Clients\Senders\IApiDataSender.cs" />
     <Compile Include="Clients\Senders\Raw\RawApiDataSender.cs" />
-    <Compile Include="FastDiff\FastDiff.cs" />
     <Compile Include="Clients\HttpSatusCodeExtension.cs" />
     <Compile Include="Clients\IApiParser.cs" />
     <Compile Include="Clients\ImmediatelyKCVDBClient.cs" />

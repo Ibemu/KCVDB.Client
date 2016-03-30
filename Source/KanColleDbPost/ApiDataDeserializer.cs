@@ -1,7 +1,7 @@
-﻿using FastDiff;
-using KCVDB.Client;
+﻿using KCVDB.Client;
 using KCVDB.Client.Clients;
 using KCVDB.Client.Clients.Senders;
+using KCVDB.Client.Clients.Senders.Diff;
 using ProtoBuf;
 using System;
 using System.Collections.Generic;

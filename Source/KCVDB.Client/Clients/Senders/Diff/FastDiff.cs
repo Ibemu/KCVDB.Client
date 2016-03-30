@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace FastDiff
+namespace KCVDB.Client.Clients.Senders.Diff
 {
 	[ProtoContract]
 	public struct DiffResult
