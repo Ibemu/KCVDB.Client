@@ -58,7 +58,7 @@ namespace KCVDB.TestClient
 
 			client.ApiDataSent += (_, e) => {
 				Console.WriteLine($"Sending data suceceded ({e.TrackingId})");
-				Console.WriteLine(e.RequestBodyByteArray);
+				Console.WriteLine(e.SentApiData);
 
 				bool succeeded = false;
 				Guid nextTrackingId;

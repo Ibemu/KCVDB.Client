@@ -1,5 +1,8 @@
-﻿using System;
-using KCVDB.Client.Clients;
+﻿using KCVDB.Client.Clients;
+using KCVDB.Client.Clients.Senders;
+using KCVDB.Client.Clients.Senders.Diff;
+using KCVDB.Client.Clients.Senders.Raw;
+using System;
 
 namespace KCVDB.Client
 {
@@ -28,7 +31,7 @@ namespace KCVDB.Client
 			string agentId,
 			string sessionId = null)
 		{
-			return CreateClient(agentId, sessionId, KCVDBClientBehavior.Queueing);
+			return CreateClient(agentId, sessionId, KCVDBClientBehavior.Queueing, SentApiDataBehavior.Application_OctetStream);
 		}
 
 		/// <summary>
@@ -37,13 +40,24 @@ namespace KCVDB.Client
 		internal IKCVDBClient CreateClient(
 			string agentId,
 			string sessionId = null,
-			KCVDBClientBehavior clientBehaivor = KCVDBClientBehavior.Queueing)
+			KCVDBClientBehavior clientBehaivor = KCVDBClientBehavior.Queueing,
+			SentApiDataBehavior sentApiDataBehavior = SentApiDataBehavior.Application_XWwwFormUrlEncorded)
 		{
 			if (agentId == null) { throw new ArgumentNullException(nameof(agentId)); }
 
 			var actualSessionId = sessionId ?? Guid.NewGuid().ToString();
 			var apiParser = new ApiParser();
-			var dataSender = new ApiDataSender(ApiServerUri, agentId, actualSessionId);
+			IApiDataSender dataSender;
+			switch (sentApiDataBehavior) {
+				case SentApiDataBehavior.Application_XWwwFormUrlEncorded:
+					dataSender = new RawApiDataSender(ApiServerUri, agentId, actualSessionId);
+					break;
+				case SentApiDataBehavior.Application_OctetStream:
+					dataSender = new DiffApiDataSender(ApiServerUri, agentId, actualSessionId);
+					break;
+				default:
+					throw new ArgumentException($"Sent api data behavior {sentApiDataBehavior} is not supported yet.");
+			}
 
 			switch (clientBehaivor) {
 				case KCVDBClientBehavior.Queueing:

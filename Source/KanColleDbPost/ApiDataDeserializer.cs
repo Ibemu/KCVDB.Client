@@ -1,6 +1,7 @@
 ﻿using FastDiff;
 using KCVDB.Client;
 using KCVDB.Client.Clients;
+using KCVDB.Client.Clients.Senders;
 using ProtoBuf;
 using System;
 using System.Collections.Generic;
@@ -12,9 +13,9 @@ namespace KanColleDbPost
 {
 	sealed class ApiDataDeserializer
 	{
-		public string[] Test(Guid trackingId, ApiData sourceData, byte[] requestBodyByteArray)
+		public string[] Test(Guid trackingId, ApiData sourceData, ISentApiData sentApiData)
 		{
-			using (var stream = new MemoryStream(requestBodyByteArray)) {
+			using (var stream = new MemoryStream(sentApiData.ToByteArray())) {
 				return Serializer.DeserializeItems<KancolleApiSendModel>(stream, PrefixStyle.Base128, 0).SelectMany(sendModel => {
 					var targetData = this.ToApiData(sendModel);
 					if (sourceData.RequestBody == targetData.RequestBody && sourceData.ResponseBody == targetData.ResponseBody) {

@@ -96,7 +96,7 @@ namespace KanColleDbPost
 					h => this.client.ApiDataSent += h,
 					h => this.client.ApiDataSent -= h)
 				.Select(e => {
-					return this.deserializer.Test(e.TrackingId, e.ApiData, e.RequestBodyByteArray);
+					return this.deserializer.Test(e.TrackingId, e.ApiData, e.SentApiData);
 				});
 		}
 

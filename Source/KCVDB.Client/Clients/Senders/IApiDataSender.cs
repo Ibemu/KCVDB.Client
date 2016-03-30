@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace KCVDB.Client.Clients
+namespace KCVDB.Client.Clients.Senders
 {
 	interface IApiDataSender : IDisposable
 	{
-		Task<byte[]> SendData(ApiData data);
+		Task<ISentApiData> SendData(ApiData data);
 	}
 }

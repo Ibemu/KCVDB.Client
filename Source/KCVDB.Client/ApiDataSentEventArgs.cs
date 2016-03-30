@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KCVDB.Client.Clients.Senders;
+using System;
 
 namespace KCVDB.Client
 {
@@ -7,15 +8,15 @@ namespace KCVDB.Client
 		public ApiDataSentEventArgs(
 			Guid trackingId,
 			ApiData apiData,
-			byte[] requestBodyByteArray)
+			ISentApiData sentApiData)
 		{
 			TrackingId = trackingId;
 			ApiData = apiData;
-			RequestBodyByteArray = requestBodyByteArray;
+			SentApiData = sentApiData;
 		}
 
 		public Guid TrackingId { get; }
 		public ApiData ApiData { get; }
-		public byte[] RequestBodyByteArray { get; }
+		public ISentApiData SentApiData { get; }
 	}
 }

@@ -8,9 +8,9 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KCVDB.Client.Clients
+namespace KCVDB.Client.Clients.Senders.Diff
 {
-	class ApiDataSender : IApiDataSender, IDisposable
+	class DiffApiDataSender : IApiDataSender, IDisposable
 	{
 		public static string SendSingleDataRequestPath = "api/send";
 
@@ -21,7 +21,7 @@ namespace KCVDB.Client.Clients
 
 		private ApiDataSerializer serializer;
 
-		public ApiDataSender(
+		public DiffApiDataSender(
 			Uri baseUri,
 			string agentId,
 			string sessionId)
@@ -37,7 +37,7 @@ namespace KCVDB.Client.Clients
 			HttpClient = new HttpClient();
 		}
 
-		public async Task<byte[]> SendData(ApiData data)
+		public async Task<ISentApiData> SendData(ApiData data)
 		{
 			if (data == null) { throw new ArgumentNullException(nameof(data)); }
 
@@ -69,7 +69,7 @@ namespace KCVDB.Client.Clients
 				//	}
 				//}
 				await Task.Delay(1);
-				return stream.ToArray();
+				return new DiffSentApiData(stream.ToArray());
 			}
 		}
 
