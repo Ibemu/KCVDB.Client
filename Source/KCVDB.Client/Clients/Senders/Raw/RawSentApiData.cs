@@ -16,11 +16,11 @@ namespace KCVDB.Client.Clients.Senders.Raw
 			}
 		}
 
-		public ApiDataSenderType SenderType
+		public string ContentType
 		{
 			get
 			{
-				return ApiDataSenderType.Application_XWwwFormUrlEncorded;
+				return "application/x-www-form-urlencoded";
 			}
 		}
 

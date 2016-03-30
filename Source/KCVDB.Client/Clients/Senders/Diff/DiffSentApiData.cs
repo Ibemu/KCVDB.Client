@@ -16,11 +16,11 @@ namespace KCVDB.Client.Clients.Senders.Diff
 			}
 		}
 
-		public ApiDataSenderType SenderType
+		public string ContentType
 		{
 			get
 			{
-				return ApiDataSenderType.Application_OctetStream;
+				return "application/octet-stream";
 			}
 		}
 

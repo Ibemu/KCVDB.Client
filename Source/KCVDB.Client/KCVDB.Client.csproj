@@ -45,7 +45,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApiData.cs" />
-    <Compile Include="ApiDataSenderType.cs" />
     <Compile Include="ApiDataSendingEventArgs.cs" />
     <Compile Include="ApiDataSentEventArgs.cs" />
     <Compile Include="Clients\ApiParser.cs" />

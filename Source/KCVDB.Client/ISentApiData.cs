@@ -16,6 +16,6 @@ namespace KCVDB.Client
 
 		SentApiDataRequestBodyFlags RequestBodyFlags { get; }
 
-		ApiDataSenderType SenderType { get; }
+		string ContentType { get; }
 	}
 }
