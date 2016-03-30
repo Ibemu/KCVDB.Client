@@ -1,9 +1,8 @@
-﻿using KCVDB.Client.Clients.Senders.Diff;
-using ProtoBuf;
+﻿using ProtoBuf;
 using System.Collections.Generic;
 using System.IO;
 
-namespace KCVDB.Client.Clients
+namespace KCVDB.Client.Clients.Senders.Diff
 {
 	class ApiDataSerializer
 	{
