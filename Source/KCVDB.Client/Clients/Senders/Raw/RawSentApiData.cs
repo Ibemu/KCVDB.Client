@@ -18,6 +18,6 @@ namespace KCVDB.Client.Clients.Senders.Raw
 		public string PayloadString { get; }
 		public byte[] PayloadByteArray { get; }
 		public int PayloadByteCount => PayloadByteArray.Length;
-		public SentApiDataPayloadFlags PayloadFlags { get; } = SentApiDataPayloadFlags.String;
+		public SentApiDataPayloadFlags PayloadFlags { get; } = SentApiDataPayloadFlags.String | SentApiDataPayloadFlags.ByteArray;
 	}
 }
