@@ -19,26 +19,54 @@ namespace KanColleDbPost
 					var targetData = this.ToApiData(sendModel);
 					if (sourceData.RequestBody == targetData.RequestBody && sourceData.ResponseBody == targetData.ResponseBody) {
 						double originalRequestByteCount = Encoding.UTF8.GetByteCount(sourceData.RequestBody);
+						this.sumOriginalRequestByteCount += originalRequestByteCount;
 						double originalResponseByteCount = Encoding.UTF8.GetByteCount(sourceData.ResponseBody);
+						this.sumOriginalResponseByteCount += originalResponseByteCount;
 						double originalByteCount = originalRequestByteCount + originalResponseByteCount;
+						double sumOriginalByteCount = this.sumOriginalRequestByteCount + this.sumOriginalResponseByteCount;
 						double modifiedRequestByteCount;
 						using (var modifiedRequestStream = new MemoryStream()) {
 							Serializer.Serialize(modifiedRequestStream, sendModel.RequestValuePatches);
 							modifiedRequestByteCount = modifiedRequestStream.Length;
 						}
+						this.sumModifiedRequestByteCount += modifiedRequestByteCount;
 						double modifiedResponseByteCount;
 						using (var modifiedResponseStream = new MemoryStream()) {
 							Serializer.Serialize(modifiedResponseStream, sendModel.ResponseValuePatches);
 							modifiedResponseByteCount = modifiedResponseStream.Length;
 						}
+						this.sumModifiedResponseByteCount += modifiedResponseByteCount;
 						double modifiedByteCount = modifiedRequestByteCount + modifiedResponseByteCount;
+						double sumModifiedByteCount = this.sumModifiedRequestByteCount + this.sumModifiedResponseByteCount;
 						return new[] {
-							string.Format("Req: {0,7} -> {1,7}, {2,7:0.00%}", originalRequestByteCount, modifiedRequestByteCount, modifiedRequestByteCount / originalRequestByteCount),
-							string.Format("Res: {0,7} -> {1,7}, {2,7:0.00%}", originalResponseByteCount, modifiedResponseByteCount, modifiedResponseByteCount / originalResponseByteCount)
+							string.Format(
+								"Req:  {0,7} -> {1,7}, {2,7:0.00%}: {3,9} -> {4,9}, {5,7:0.00%}",
+								originalRequestByteCount,
+								modifiedRequestByteCount,
+								modifiedRequestByteCount / originalRequestByteCount,
+								this.sumOriginalRequestByteCount,
+								this.sumModifiedRequestByteCount,
+								this.sumModifiedRequestByteCount / this.sumOriginalRequestByteCount),
+							string.Format(
+								"Res:  {0,7} -> {1,7}, {2,7:0.00%}: {3,9} -> {4,9}, {5,7:0.00%}",
+								originalResponseByteCount,
+								modifiedResponseByteCount,
+								modifiedResponseByteCount / originalResponseByteCount,
+								this.sumOriginalResponseByteCount,
+								this.sumModifiedResponseByteCount,
+								this.sumModifiedResponseByteCount / this.sumOriginalResponseByteCount),
+							string.Format(
+								"Both: {0,7} -> {1,7}, {2,7:0.00%}: {3,9} -> {4,9}, {5,7:0.00%}",
+								originalByteCount,
+								modifiedByteCount,
+								modifiedByteCount / originalByteCount,
+								sumOriginalByteCount,
+								sumModifiedByteCount,
+								sumModifiedByteCount / sumOriginalByteCount)
 						};
 					}
 					else {
-						return new[] { "Failed." };
+						return new[] { "APIの復元に失敗しました。" };
 					}
 				}).ToArray();
 			}
