@@ -4,7 +4,7 @@ namespace KCVDB.Client.Clients.Senders.Raw
 {
 	sealed class RawSentApiData : ISentApiData
 	{
-		public int RequestBodyByteCount
+		public int PayloadByteCount
 		{
 			get
 			{
@@ -20,7 +20,7 @@ namespace KCVDB.Client.Clients.Senders.Raw
 			}
 		}
 
-		public byte[] RequestBodyByteArray
+		public byte[] PayloadByteArray
 		{
 			get
 			{
@@ -28,7 +28,7 @@ namespace KCVDB.Client.Clients.Senders.Raw
 			}
 		}
 
-		public string RequestBodyString
+		public string PayloadString
 		{
 			get
 			{
@@ -36,11 +36,11 @@ namespace KCVDB.Client.Clients.Senders.Raw
 			}
 		}
 
-		public SentApiDataRequestBodyFlags RequestBodyFlags
+		public SentApiDataPayloadFlags PayloadFlags
 		{
 			get
 			{
-				return SentApiDataRequestBodyFlags.String | SentApiDataRequestBodyFlags.ByteArray;
+				return SentApiDataPayloadFlags.String | SentApiDataPayloadFlags.ByteArray;
 			}
 		}
 

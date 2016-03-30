@@ -3,7 +3,7 @@
 namespace KCVDB.Client
 {
 	[Flags]
-	public enum SentApiDataRequestBodyFlags
+	public enum SentApiDataPayloadFlags
 	{
 		ByteArray = 1,
 		String = 2

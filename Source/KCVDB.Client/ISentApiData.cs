@@ -2,13 +2,13 @@
 {
 	public interface ISentApiData
 	{
-		int RequestBodyByteCount { get; }
+		int PayloadByteCount { get; }
 
-		string RequestBodyString { get; }
+		string PayloadString { get; }
 
-		byte[] RequestBodyByteArray { get; }
+		byte[] PayloadByteArray { get; }
 
-		SentApiDataRequestBodyFlags RequestBodyFlags { get; }
+		SentApiDataPayloadFlags PayloadFlags { get; }
 
 		string ContentType { get; }
 	}

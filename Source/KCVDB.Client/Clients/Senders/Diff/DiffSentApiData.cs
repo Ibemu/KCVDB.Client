@@ -4,7 +4,7 @@ namespace KCVDB.Client.Clients.Senders.Diff
 {
 	sealed class DiffSentApiData : ISentApiData
 	{
-		public int RequestBodyByteCount
+		public int PayloadByteCount
 		{
 			get
 			{
@@ -20,7 +20,7 @@ namespace KCVDB.Client.Clients.Senders.Diff
 			}
 		}
 
-		public byte[] RequestBodyByteArray
+		public byte[] PayloadByteArray
 		{
 			get
 			{
@@ -28,7 +28,7 @@ namespace KCVDB.Client.Clients.Senders.Diff
 			}
 		}
 
-		public string RequestBodyString
+		public string PayloadString
 		{
 			get
 			{
@@ -36,11 +36,11 @@ namespace KCVDB.Client.Clients.Senders.Diff
 			}
 		}
 
-		public SentApiDataRequestBodyFlags RequestBodyFlags
+		public SentApiDataPayloadFlags PayloadFlags
 		{
 			get
 			{
-				return SentApiDataRequestBodyFlags.ByteArray;
+				return SentApiDataPayloadFlags.ByteArray;
 			}
 		}
 

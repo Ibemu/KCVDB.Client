@@ -15,7 +15,7 @@ namespace KanColleDbPost
 	{
 		public string[] Test(Guid trackingId, ApiData sourceData, ISentApiData sentApiData)
 		{
-			using (var stream = new MemoryStream(sentApiData.RequestBodyByteArray)) {
+			using (var stream = new MemoryStream(sentApiData.PayloadByteArray)) {
 				return Serializer.DeserializeItems<KancolleApiSendModel>(stream, PrefixStyle.Base128, 0).SelectMany(sendModel => {
 					var targetData = this.ToApiData(sendModel);
 					if (sourceData.RequestBody == targetData.RequestBody && sourceData.ResponseBody == targetData.ResponseBody) {
