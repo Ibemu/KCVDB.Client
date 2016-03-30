@@ -1,6 +1,6 @@
-﻿using KCVDB.Client.Clients.Senders;
-using System;
+﻿using System;
 using System.Threading.Tasks;
+using KCVDB.Client.Clients.Senders;
 
 namespace KCVDB.Client.Clients
 {

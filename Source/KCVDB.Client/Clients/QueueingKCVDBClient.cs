@@ -1,9 +1,9 @@
-﻿using KCVDB.Client.Clients.Senders;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
+using KCVDB.Client.Clients.Senders;
 
 namespace KCVDB.Client.Clients
 {

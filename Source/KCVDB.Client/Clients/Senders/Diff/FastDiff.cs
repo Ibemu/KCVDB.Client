@@ -1,9 +1,9 @@
 ﻿// http://d.hatena.ne.jp/siokoshou/20070315
 
-using ProtoBuf;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using ProtoBuf;
 
 namespace KCVDB.Client.Clients.Senders.Diff
 {

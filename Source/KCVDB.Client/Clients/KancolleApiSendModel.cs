@@ -1,6 +1,6 @@
-﻿using KCVDB.Client.Clients.Senders.Diff;
+﻿using System.Collections.Generic;
+using KCVDB.Client.Clients.Senders.Diff;
 using ProtoBuf;
-using System.Collections.Generic;
 
 namespace KCVDB.Client.Clients
 {

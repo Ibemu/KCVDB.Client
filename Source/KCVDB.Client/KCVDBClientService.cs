@@ -1,8 +1,8 @@
-﻿using KCVDB.Client.Clients;
+﻿using System;
+using KCVDB.Client.Clients;
 using KCVDB.Client.Clients.Senders;
 using KCVDB.Client.Clients.Senders.Diff;
 using KCVDB.Client.Clients.Senders.Raw;
-using System;
 
 namespace KCVDB.Client
 {

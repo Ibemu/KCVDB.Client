@@ -1,6 +1,4 @@
-﻿using Fiddler;
-using KCVDB.Client;
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
 using System.Reactive.Linq;
@@ -9,6 +7,8 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
 using System.Windows.Forms;
+using Fiddler;
+using KCVDB.Client;
 
 namespace KanColleDbPost
 {
