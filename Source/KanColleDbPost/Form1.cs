@@ -1,12 +1,6 @@
 ﻿using Fiddler;
 using KCVDB.Client;
-using KCVDB.Client.Clients;
-using ProtoBuf;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
@@ -24,16 +18,12 @@ namespace KanColleDbPost
 
 		private void Form1_Load(object sender, EventArgs e)
 		{
-			var deserializer = new KancolleApiSendModelDeserializer();
 			this.client = KCVDBClientService.Instance.CreateClient("KanColleDbPost");
+			var deserializer = new ApiDataDeserializer();
 			this.client.ApiDataSent += (senderClient, apiSentDataEventArgs) =>
 			{
-				using (var stream = new MemoryStream(apiSentDataEventArgs.RequestBodyByteArray))
-				{
-					foreach (var data in deserializer.Deserialize(stream))
-					{
-						Debug.WriteLine(data.ResponseValue);
-					}
+				foreach (var text in deserializer.Test(apiSentDataEventArgs.TrackingId, apiSentDataEventArgs.ApiData, apiSentDataEventArgs.RequestBodyByteArray)) {
+					this.AppendText(text + "\n");
 				}
 			};
 			FiddlerApplication.AfterSessionComplete += FiddlerApplication_AfterSessionComplete;

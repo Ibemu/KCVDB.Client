@@ -19,7 +19,7 @@ namespace KCVDB.Client.Clients
 		public Uri BaseUri { get; }
 		public HttpClient HttpClient { get; }
 
-		private KancolleApiSendModelSerializer serializer;
+		private ApiDataSerializer serializer;
 
 		public ApiDataSender(
 			Uri baseUri,
@@ -32,7 +32,7 @@ namespace KCVDB.Client.Clients
 			BaseUri = baseUri;
 			AgentId = agentId;
 			SessionId = sessionId;
-			serializer = new KancolleApiSendModelSerializer(SessionId, AgentId);
+			serializer = new ApiDataSerializer(SessionId, AgentId);
 
 			HttpClient = new HttpClient();
 		}

@@ -7,7 +7,7 @@ using System.Text;
 
 namespace KCVDB.Client.Clients
 {
-	public sealed class KancolleApiSendModelDeserializer
+	public sealed class ApiDataDeserializer
 	{
 		public IEnumerable<ApiData> Deserialize(Stream stream)
 		{

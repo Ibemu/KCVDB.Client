@@ -4,9 +4,9 @@ using System.IO;
 
 namespace KCVDB.Client.Clients
 {
-	class KancolleApiSendModelSerializer
+	class ApiDataSerializer
 	{
-		public KancolleApiSendModelSerializer(string sessionId, string agentId)
+		public ApiDataSerializer(string sessionId, string agentId)
 		{
 			this.sessionId = sessionId;
 			this.agentId = agentId;

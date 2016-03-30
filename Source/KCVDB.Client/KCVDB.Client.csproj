@@ -47,11 +47,11 @@
     <Compile Include="ApiData.cs" />
     <Compile Include="ApiDataSendingEventArgs.cs" />
     <Compile Include="ApiDataSentEventArgs.cs" />
+    <Compile Include="Clients\ApiDataDeserializer.cs" />
     <Compile Include="Clients\ApiDataSender.cs" />
+    <Compile Include="Clients\ApiDataSerializer.cs" />
     <Compile Include="Clients\ApiParser.cs" />
     <Compile Include="Clients\KancolleApiSendModel.cs" />
-    <Compile Include="Clients\KancolleApiSendModelDeserializer.cs" />
-    <Compile Include="Clients\KancolleApiSendModelSerializer.cs" />
     <Compile Include="FastDiff\FastDiff.cs" />
     <Compile Include="Clients\HttpSatusCodeExtension.cs" />
     <Compile Include="Clients\IApiDataSender.cs" />
