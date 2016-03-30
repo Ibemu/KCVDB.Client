@@ -1,8 +1,10 @@
 ﻿using Fiddler;
 using KCVDB.Client;
 using System;
+using System.IO;
 using System.Linq;
 using System.Reactive.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
@@ -144,6 +146,11 @@ namespace KanColleDbPost
 				this.textBox1.AppendText(text);
 				this.textBox1.SelectionStart = textBox1.Text.Length;
 				this.textBox1.ScrollToCaret();
+				var dateTime = DateTime.Now;
+				File.AppendAllText(
+					Path.Combine(Application.StartupPath, string.Format("{0}.log", dateTime.ToString("yyyyMMdd"))),
+					string.Format("[{0}] {1}", dateTime.ToString(), text.Replace("\n", "\r\n")),
+					new UTF8Encoding(true));
 			}
 		}
 
