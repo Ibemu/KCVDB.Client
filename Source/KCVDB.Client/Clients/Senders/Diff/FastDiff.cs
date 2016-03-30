@@ -39,8 +39,7 @@ namespace KCVDB.Client.Clients.Senders.Diff
 		private bool isSwap;
 		private Snake[] fp;
 
-		private delegate bool IsSame( int posA, int posB );
-		private IsSame isSame;
+		private Func<int, int, bool> isSame;
 
 
 		private FastDiff() { }
@@ -57,12 +56,14 @@ namespace KCVDB.Client.Clients.Senders.Diff
 			FastDiff diff = new FastDiff();
 			if ( textA.Length <= textB.Length )
 			{
-				diff.SplitChar( textA, textB );
+				diff.dataA = textA;
+				diff.dataB = textB;
 			}
 			else
 			{
 				diff.isSwap = true;
-				diff.SplitChar( textB, textA );
+				diff.dataA = textB;
+				diff.dataB = textA;
 			}
 
 			diff.isSame = delegate( int posA, int posB )
@@ -76,20 +77,9 @@ namespace KCVDB.Client.Clients.Senders.Diff
 
 		private static IList<DiffResult> StringNullOrEmpty( string textA, string textB )
 		{
-			int lengthA = ( string.IsNullOrEmpty( textA ) ) ? 0 : textA.Length;
-			int lengthB = ( string.IsNullOrEmpty( textB ) ) ? 0 : textB.Length;
+			int lengthA = textA?.Length ?? 0;
+			int lengthB = textB?.Length ?? 0;
 			return PresentDiff( new CommonSubsequence( lengthA, lengthB, 0, null ), textA, textB );
-		}
-
-		private void SplitChar( string textA, string textB )
-		{
-			this.dataA = SplitChar( textA );
-			this.dataB = SplitChar( textB );
-		}
-
-		private static string SplitChar( string text )
-		{
-			return text;
 		}
 
 		private IList<DiffResult> DetectDiff()
