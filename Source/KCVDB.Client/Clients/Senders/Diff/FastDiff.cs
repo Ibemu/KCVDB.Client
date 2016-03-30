@@ -249,7 +249,8 @@ namespace KCVDB.Client.Clients.Senders.Diff
 					var firstEnd = first.OriginalStart + first.OriginalLength;
 					var secondStart = second.OriginalStart;
 					var secondEnd = second.OriginalStart + second.OriginalLength;
-					if ( secondStart - firstEnd <= 6 )
+					var byteCount = GetByteCount( second.OriginalStart ) + GetByteCount( second.OriginalLength ) + GetByteCount( second.Modified.Length );
+					if ( ( secondStart - firstEnd ) <= byteCount )
 					{
 						first = new DiffResult(
 							firstStart,
@@ -268,6 +269,24 @@ namespace KCVDB.Client.Clients.Senders.Diff
 			else
 			{
 				return list;
+			}
+		}
+
+		private static int GetByteCount( int s )
+		{
+			var u = unchecked( ( uint ) s );
+			if ( u == 0 )
+			{
+				return 0;
+			}
+			else
+			{
+				var byteCount = 2;
+				for ( ; u >= ( 1 << 7 ); u >>= 7 )
+				{
+					++byteCount;
+				}
+				return byteCount;
 			}
 		}
 
