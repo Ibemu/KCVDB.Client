@@ -1,13 +1,11 @@
-﻿using KCVDB.Client;
-using KCVDB.Client.Clients;
-using KCVDB.Client.Clients.Senders;
-using KCVDB.Client.Clients.Senders.Diff;
-using ProtoBuf;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using KCVDB.Client;
+using KCVDB.Client.Clients.Senders.Diff;
+using ProtoBuf;
 
 namespace KanColleDbPost
 {

@@ -9,6 +9,7 @@ using System.Web;
 using System.Windows.Forms;
 using Fiddler;
 using KCVDB.Client;
+using KCVDB.Client.Clients.Senders.Diff;
 
 namespace KanColleDbPost
 {
@@ -22,7 +23,7 @@ namespace KanColleDbPost
 
 		private void Form1_Load(object sender, EventArgs e)
 		{
-			this.client = KCVDBClientService.Instance.CreateClient("KanColleDbPost");
+			this.client = KCVDBClientService.Instance.CreateClient("KanColleDbPost", Guid.NewGuid().ToString(), new DiffApiDataSenderFactory());
 			this.deserializer = new ApiDataDeserializer();
 			Observable
 				.Zip(

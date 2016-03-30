@@ -4,51 +4,20 @@ namespace KCVDB.Client.Clients.Senders.Raw
 {
 	sealed class RawSentApiData : ISentApiData
 	{
-		public int PayloadByteCount
+		public RawSentApiData(
+			string contentString,
+			string contentType,
+			Encoding contentEncoding)
 		{
-			get
-			{
-				return Encoding.UTF8.GetByteCount(this.contentString);
-			}
+			PayloadString = contentString;
+			ContentType = contentType;
+			PayloadByteArray = contentEncoding.GetBytes(contentString);
 		}
 
-		public string ContentType
-		{
-			get
-			{
-				return "application/x-www-form-urlencoded";
-			}
-		}
-
-		public byte[] PayloadByteArray
-		{
-			get
-			{
-				return Encoding.UTF8.GetBytes(this.contentString);
-			}
-		}
-
-		public string PayloadString
-		{
-			get
-			{
-				return this.contentString;
-			}
-		}
-
-		public SentApiDataPayloadFlags PayloadFlags
-		{
-			get
-			{
-				return SentApiDataPayloadFlags.String | SentApiDataPayloadFlags.ByteArray;
-			}
-		}
-
-		public RawSentApiData(string contentString)
-		{
-			this.contentString = contentString;
-		}
-
-		private readonly string contentString;
+		public string ContentType { get; }
+		public string PayloadString { get; }
+		public byte[] PayloadByteArray { get; }
+		public int PayloadByteCount => PayloadByteArray.Length;
+		public SentApiDataPayloadFlags PayloadFlags { get; } = SentApiDataPayloadFlags.String | SentApiDataPayloadFlags.ByteArray;
 	}
 }

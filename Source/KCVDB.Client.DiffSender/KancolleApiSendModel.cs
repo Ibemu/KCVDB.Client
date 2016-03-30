@@ -2,7 +2,7 @@
 using KCVDB.Client.Clients.Senders.Diff;
 using ProtoBuf;
 
-namespace KCVDB.Client.Clients
+namespace KCVDB.Client.Clients.Senders.Diff
 {
 	[ProtoContract]
 	public sealed class KancolleApiSendModel
