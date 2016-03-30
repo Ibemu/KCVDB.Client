@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="protobuf-net, Version=2.0.0.668, Culture=neutral, PublicKeyToken=257b51d87d2e4d67, processorArchitecture=MSIL">
+      <HintPath>..\packages\protobuf-net.2.0.0.668\lib\net40\protobuf-net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -43,10 +47,16 @@
     <Compile Include="ApiData.cs" />
     <Compile Include="ApiDataSendingEventArgs.cs" />
     <Compile Include="ApiDataSentEventArgs.cs" />
-    <Compile Include="Clients\ApiDataSender.cs" />
     <Compile Include="Clients\ApiParser.cs" />
+    <Compile Include="Clients\Senders\Diff\ApiDataSerializer.cs" />
+    <Compile Include="Clients\Senders\Diff\DiffSentApiData.cs" />
+    <Compile Include="Clients\Senders\Diff\FastDiff.cs" />
+    <Compile Include="Clients\Senders\Raw\RawSentApiData.cs" />
+    <Compile Include="Clients\KancolleApiSendModel.cs" />
+    <Compile Include="Clients\Senders\Diff\DiffApiSender.cs" />
+    <Compile Include="Clients\Senders\IApiDataSender.cs" />
+    <Compile Include="Clients\Senders\Raw\RawApiDataSender.cs" />
     <Compile Include="Clients\HttpSatusCodeExtension.cs" />
-    <Compile Include="Clients\IApiDataSender.cs" />
     <Compile Include="Clients\IApiParser.cs" />
     <Compile Include="Clients\ImmediatelyKCVDBClient.cs" />
     <Compile Include="Clients\QueueingKCVDBClient.cs" />
@@ -55,9 +65,14 @@
     <Compile Include="FatalErrorEventArgs.cs" />
     <Compile Include="IKCVDBClient.cs" />
     <Compile Include="InternalErrorEventArgs.cs" />
+    <Compile Include="ISentApiData.cs" />
     <Compile Include="KCVDBClientService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SendingErrorEventArgs.cs" />
+    <Compile Include="SentApiDataPayloadFlags.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

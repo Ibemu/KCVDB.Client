@@ -7,15 +7,15 @@ namespace KCVDB.Client
 		public ApiDataSentEventArgs(
 			Guid trackingId,
 			ApiData apiData,
-			string requestBodyText)
+			ISentApiData sentApiData)
 		{
 			TrackingId = trackingId;
 			ApiData = apiData;
-			RequestBodyText = requestBodyText;
+			SentApiData = sentApiData;
 		}
 
 		public Guid TrackingId { get; }
 		public ApiData ApiData { get; }
-		public string RequestBodyText { get; }
+		public ISentApiData SentApiData { get; }
 	}
 }

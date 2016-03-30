@@ -1,5 +1,8 @@
 ﻿using System;
 using KCVDB.Client.Clients;
+using KCVDB.Client.Clients.Senders;
+using KCVDB.Client.Clients.Senders.Diff;
+using KCVDB.Client.Clients.Senders.Raw;
 
 namespace KCVDB.Client
 {
@@ -28,7 +31,7 @@ namespace KCVDB.Client
 			string agentId,
 			string sessionId = null)
 		{
-			return CreateClient(agentId, sessionId, KCVDBClientBehavior.Queueing);
+			return CreateClient(agentId, sessionId, KCVDBClientBehavior.Queueing, "application/octet-stream");
 		}
 
 		/// <summary>
@@ -37,13 +40,24 @@ namespace KCVDB.Client
 		internal IKCVDBClient CreateClient(
 			string agentId,
 			string sessionId = null,
-			KCVDBClientBehavior clientBehaivor = KCVDBClientBehavior.Queueing)
+			KCVDBClientBehavior clientBehaivor = KCVDBClientBehavior.Queueing,
+			string apiDataSenderContentType = "application/x-www-form-urlencoded")
 		{
 			if (agentId == null) { throw new ArgumentNullException(nameof(agentId)); }
 
 			var actualSessionId = sessionId ?? Guid.NewGuid().ToString();
 			var apiParser = new ApiParser();
-			var dataSender = new ApiDataSender(ApiServerUri, agentId, actualSessionId);
+			IApiDataSender dataSender;
+			switch (apiDataSenderContentType) {
+				case "application/x-www-form-urlencoded":
+					dataSender = new RawApiDataSender(ApiServerUri, agentId, actualSessionId);
+					break;
+				case "application/octet-stream":
+					dataSender = new DiffApiDataSender(ApiServerUri, agentId, actualSessionId);
+					break;
+				default:
+					throw new ArgumentException($"Sent api data behavior {apiDataSenderContentType} is not supported yet.");
+			}
 
 			switch (clientBehaivor) {
 				case KCVDBClientBehavior.Queueing:
