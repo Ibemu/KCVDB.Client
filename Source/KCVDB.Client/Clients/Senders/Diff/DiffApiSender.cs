@@ -43,26 +43,6 @@ namespace KCVDB.Client.Clients.Senders.Diff
 
 			using (var stream = new MemoryStream()) {
 				serializer.Serialize(stream, data);
-				//using (var content = new StreamContent(stream)) {
-				//	content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
-
-				//	try {
-				//		using (var response = await HttpClient.PostAsync(requestUri, content)) {
-				//			if (!response.IsSuccessStatusCode) {
-				//				throw new HttpSendingFailureException(response.StatusCode, response.StatusCode.IsServerError() ? SendingErrorReason.ServerError : SendingErrorReason.HttpProtocolError);
-				//			}
-				//		}
-				//	}
-				//	catch (WebException ex) {
-				//		throw new HttpSendingFailureException(ex,
-				//			ex.Status == WebExceptionStatus.ProtocolError
-				//				? (ex.Response as HttpWebResponse)?.StatusCode.IsServerError() == true
-				//					? SendingErrorReason.ServerError
-				//					: SendingErrorReason.HttpProtocolError
-				//				: SendingErrorReason.NetworkError
-				//			);
-				//	}
-				//}
 				await Task.Delay(1);
 				return new DiffSentApiData(stream.ToArray());
 			}
