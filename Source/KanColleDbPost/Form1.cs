@@ -1,6 +1,8 @@
 ﻿using Fiddler;
 using KCVDB.Client;
 using System;
+using System.Linq;
+using System.Reactive.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
@@ -19,14 +21,17 @@ namespace KanColleDbPost
 		private void Form1_Load(object sender, EventArgs e)
 		{
 			this.client = KCVDBClientService.Instance.CreateClient("KanColleDbPost");
-			var deserializer = new ApiDataDeserializer();
-			this.client.ApiDataSent += (senderClient, apiSentDataEventArgs) =>
-			{
-				foreach (var text in deserializer.Test(apiSentDataEventArgs.TrackingId, apiSentDataEventArgs.ApiData, apiSentDataEventArgs.RequestBodyByteArray)) {
-					this.AppendText(text + "\n");
-				}
-			};
-			FiddlerApplication.AfterSessionComplete += FiddlerApplication_AfterSessionComplete;
+			this.deserializer = new ApiDataDeserializer();
+			Observable
+				.Zip(
+					FiddlerApplication_AfterSessionComplete(),
+					IKCVDBClient_ApiDataSent(),
+					(first, second) => Enumerable.Concat(first, second))
+				.Subscribe(texts => {
+					foreach (var text in texts) {
+						this.AppendText(text + "\n");
+					}
+				});
 			Application.ApplicationExit += Application_ApplicationExit;
 			this.button1_Click(this, EventArgs.Empty);
 		}
@@ -44,27 +49,30 @@ namespace KanColleDbPost
 
 		private bool isCapture = false;
 
-		void FiddlerApplication_AfterSessionComplete(Session oSession)
+		private IKCVDBClient client;
+		private ApiDataDeserializer deserializer;
+
+		private IObservable<string[]> FiddlerApplication_AfterSessionComplete()
 		{
-			if (oSession.PathAndQuery.StartsWith("/kcsapi") &&
-				oSession.oResponse.MIMEType.Equals("text/plain"))
-			{
-				Task.Factory.StartNew(() =>
-				{
+			return Observable
+				.FromEvent<SessionStateHandler, Session>(
+					h => FiddlerApplication.AfterSessionComplete += h,
+					h => FiddlerApplication.AfterSessionComplete -= h)
+				.Where(oSession => {
+					return oSession.PathAndQuery.StartsWith("/kcsapi") &&
+						oSession.oResponse.MIMEType.Equals("text/plain");
+				})
+				.Select(oSession => {
 					string url = oSession.fullUrl;
 					string responseBody = oSession.GetResponseBodyAsString();
 					responseBody.Replace("svdata=", "");
 
-					string str = "Post server from " + url + "\n";
-					AppendText(str);
+					string str = "Post server from " + url;
 
 					PostServer(oSession);
-					if (checkBox1.Checked)
-					{
-						AppendText(url + "\n");
-					}
+
+					return new[] { str };
 				});
-			}
 		}
 
 		private void PostServer(Session oSession)
@@ -76,6 +84,18 @@ namespace KanColleDbPost
 			responseBody.Replace("svdata=", "");
 
 			this.client.SendRequestDataAsync(new Uri(url), oSession.ResponseHeaders.HTTPResponseCode, requestBody, responseBody, oSession.ResponseHeaders["Date"]);
+		}
+
+		private IObservable<string[]> IKCVDBClient_ApiDataSent()
+		{
+			return Observable
+				.FromEvent<EventHandler<ApiDataSentEventArgs>, ApiDataSentEventArgs>(
+					h => (sender, e) => h(e),
+					h => this.client.ApiDataSent += h,
+					h => this.client.ApiDataSent -= h)
+				.Select(e => {
+					return this.deserializer.Test(e.TrackingId, e.ApiData, e.RequestBodyByteArray);
+				});
 		}
 
 		/// <summary>
@@ -166,7 +186,5 @@ namespace KanColleDbPost
 		{
 			this.Close();
 		}
-
-		private IKCVDBClient client;
 	}
 }

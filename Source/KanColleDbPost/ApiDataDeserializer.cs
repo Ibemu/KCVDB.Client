@@ -12,7 +12,7 @@ namespace KanColleDbPost
 {
 	sealed class ApiDataDeserializer
 	{
-		public string[] Test(Guid trackingId, KCVDB.Client.ApiData sourceData, byte[] requestBodyByteArray)
+		public string[] Test(Guid trackingId, ApiData sourceData, byte[] requestBodyByteArray)
 		{
 			using (var stream = new MemoryStream(requestBodyByteArray)) {
 				return Serializer.DeserializeItems<KancolleApiSendModel>(stream, PrefixStyle.Base128, 0).SelectMany(sendModel => {
