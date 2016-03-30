@@ -143,13 +143,14 @@ namespace KanColleDbPost
 			else
 			{
 				// コントロールを直接呼び出す
+				var dateTime = DateTime.Now;
+				text = $"[{dateTime.ToString()}] {text}";
 				this.textBox1.AppendText(text);
 				this.textBox1.SelectionStart = textBox1.Text.Length;
 				this.textBox1.ScrollToCaret();
-				var dateTime = DateTime.Now;
 				File.AppendAllText(
-					Path.Combine(Application.StartupPath, string.Format("{0}.log", dateTime.ToString("yyyyMMdd"))),
-					string.Format("[{0}] {1}", dateTime.ToString(), text.Replace("\n", "\r\n")),
+					Path.Combine(Application.StartupPath, $"{dateTime.ToString("yyyyMMdd")}.log"),
+					text.Replace("\n", "\r\n"),
 					new UTF8Encoding(true));
 			}
 		}
