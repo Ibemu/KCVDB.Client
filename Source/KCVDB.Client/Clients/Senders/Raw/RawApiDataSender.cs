@@ -6,9 +6,9 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KCVDB.Client.Clients
+namespace KCVDB.Client.Clients.Senders.Raw
 {
-	class ApiDataSender : IApiDataSender, IDisposable
+	class RawApiDataSender : IApiDataSender, IDisposable
 	{
 		public static string SendSingleDataRequestPath = "api/send";
 
@@ -17,7 +17,7 @@ namespace KCVDB.Client.Clients
 		public Uri BaseUri { get; }
 		public HttpClient HttpClient { get; }
 
-		public ApiDataSender(
+		public RawApiDataSender(
 			Uri baseUri,
 			string agentId,
 			string sessionId)
@@ -32,7 +32,7 @@ namespace KCVDB.Client.Clients
 			HttpClient = new HttpClient();
 		}
 
-		public async Task<string> SendData(ApiData data)
+		public async Task<ISentApiData> SendData(ApiData data)
 		{
 			if (data == null) { throw new ArgumentNullException(nameof(data)); }
 
@@ -72,7 +72,10 @@ namespace KCVDB.Client.Clients
 					);
 			}
 
-			return contentString;
+			return new RawSentApiData(
+				contentString,
+				"application/x-www-form-urlencoded",
+				Encoding.UTF8);
 		}
 
 		#region IDisposable member

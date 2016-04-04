@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using KCVDB.Client.Clients.Senders;
 
 namespace KCVDB.Client.Clients
 {
@@ -44,8 +45,8 @@ namespace KCVDB.Client.Clients
 
 			try {
 				this.ApiDataSending?.Invoke(this, new ApiDataSendingEventArgs(actualTrackingId, data));
-				var contentString = await DataSender.SendData(data);
-				this.ApiDataSent?.Invoke(this, new ApiDataSentEventArgs(actualTrackingId, data, contentString));
+				var sentApiData = await DataSender.SendData(data);
+				this.ApiDataSent?.Invoke(this, new ApiDataSentEventArgs(actualTrackingId, data, sentApiData));
 			}
 			catch (DataSendingException ex) {
 				this.SendingError?.Invoke(this, new SendingErrorEventArgs(actualTrackingId, "Failed sending API data.", data, ex));

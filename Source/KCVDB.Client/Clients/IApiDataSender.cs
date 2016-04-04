@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 
 namespace KCVDB.Client.Clients
 {
-	interface IApiDataSender : IDisposable
+	public interface IApiDataSender : IDisposable
 	{
-		Task<string> SendData(ApiData data);
+		Task<ISentApiData> SendData(ApiData data);
 	}
 }

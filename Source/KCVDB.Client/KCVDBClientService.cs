@@ -1,5 +1,6 @@
 ﻿using System;
 using KCVDB.Client.Clients;
+using KCVDB.Client.Clients.Senders.Raw;
 
 namespace KCVDB.Client
 {
@@ -28,7 +29,11 @@ namespace KCVDB.Client
 			string agentId,
 			string sessionId = null)
 		{
-			return CreateClient(agentId, sessionId, KCVDBClientBehavior.Queueing);
+			return CreateClient(
+				agentId,
+				sessionId,
+				new RawApiDataSenderFactory(),
+				KCVDBClientBehavior.Queueing);
 		}
 
 		/// <summary>
@@ -36,14 +41,16 @@ namespace KCVDB.Client
 		/// </summary>
 		internal IKCVDBClient CreateClient(
 			string agentId,
-			string sessionId = null,
+			string sessionId,
+			IApiDataSenderFactory apiSenderFactory,
 			KCVDBClientBehavior clientBehaivor = KCVDBClientBehavior.Queueing)
 		{
 			if (agentId == null) { throw new ArgumentNullException(nameof(agentId)); }
+			if (apiSenderFactory == null) { throw new ArgumentNullException(nameof(apiSenderFactory)); }
 
 			var actualSessionId = sessionId ?? Guid.NewGuid().ToString();
 			var apiParser = new ApiParser();
-			var dataSender = new ApiDataSender(ApiServerUri, agentId, actualSessionId);
+			var dataSender = apiSenderFactory.CreateSender(ApiServerUri, agentId, actualSessionId);
 
 			switch (clientBehaivor) {
 				case KCVDBClientBehavior.Queueing:
@@ -53,7 +60,7 @@ namespace KCVDB.Client
 					return new ImmediatelyKCVDBClient(apiParser, dataSender);
 
 				default:
-					throw new ArgumentException($"Client behavior {clientBehaivor} is not supported yet.");
+					throw new ArgumentException($"Client behavior {clientBehaivor} is not supported.");
 			}
 		}
 	}
