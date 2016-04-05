@@ -1,0 +1,18 @@
+﻿<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+	<metadata>
+		<id>$id$</id>
+		<title>$title$</title>
+		<version>$version$</version>
+		<authors>$author$</authors>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<description>$description$</description>
+		<projectUrl>https://github.com/KancolleVerificationTeam/KCVDB.Client</projectUrl>
+		<licenseUrl>https://github.com/KancolleVerificationTeam/KCVDB.Client/blob/master/LICENSE</licenseUrl>
+		<language>en-US</language>
+		<tags>KanColle</tags>
+		<frameworkAssemblies>
+			<frameworkAssembly assemblyName="System.Net.Http" />
+		</frameworkAssemblies>
+	</metadata>
+</package>
