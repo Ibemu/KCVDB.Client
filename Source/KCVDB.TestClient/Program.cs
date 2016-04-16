@@ -57,19 +57,21 @@ namespace KCVDB.TestClient
 			};
 
 			client.ApiDataSent += (_, e) => {
-				Console.WriteLine($"Sending data suceceded ({e.TrackingId})");
-				Console.WriteLine(e.SentApiData);
+				foreach (var trackingId in e.TrackingIds) {
+					Console.WriteLine($"Sending data suceceded ({trackingId})");
+					Console.WriteLine(e.SentApiData);
 
-				bool succeeded = false;
-				Guid nextTrackingId;
-				do {
-					succeeded = trackingIds.TryDequeue(out nextTrackingId);
-				}
-				while (!succeeded);
+					bool succeeded = false;
+					Guid nextTrackingId;
+					do {
+						succeeded = trackingIds.TryDequeue(out nextTrackingId);
+					}
+					while (!succeeded);
 
-				if (e.TrackingId != nextTrackingId) {
-					allDataSentSuccessfully = false;
-					Console.WriteLine("Invalid tracking ID. (Expected: {0}, Actual: {1})", nextTrackingId, e.TrackingId);
+					if (trackingId != nextTrackingId) {
+						allDataSentSuccessfully = false;
+						Console.WriteLine("Invalid tracking ID. (Expected: {0}, Actual: {1})", nextTrackingId, trackingId);
+					}
 				}
 
 				doneAll = trackingIds.Count == 0;

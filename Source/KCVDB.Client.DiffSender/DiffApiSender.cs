@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -13,6 +14,8 @@ namespace KCVDB.Client.Clients.Senders.Diff
 		public string SessionId { get; }
 		public Uri BaseUri { get; }
 		public HttpClient HttpClient { get; }
+
+		public bool SupportsMultiPost { get; } = false;
 
 		private ApiDataSerializer serializer;
 
@@ -46,6 +49,11 @@ namespace KCVDB.Client.Clients.Senders.Diff
 				await Task.Delay(1);
 				return new DiffSentApiData(stream.ToArray());
 			}
+		}
+
+		public Task<ISentApiData> SendData(IEnumerable<ApiData> apiData)
+		{
+			throw new NotSupportedException();
 		}
 
 		#region IDisposable member
