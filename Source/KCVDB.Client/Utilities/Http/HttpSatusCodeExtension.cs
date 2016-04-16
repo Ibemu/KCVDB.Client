@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace KCVDB.Client.Clients.Senders.Raw
+namespace KCVDB.Client.Clients.Utilities.Http
 {
 	static class HttpSatusCodeExtention
 	{

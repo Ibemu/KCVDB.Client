@@ -5,14 +5,14 @@ namespace KCVDB.Client
 	public sealed class ApiDataSendingEventArgs : EventArgs
 	{
 		public ApiDataSendingEventArgs(
-			Guid trackingId,
-			ApiData apiData)
+			Guid[] trackingIds,
+			ApiData[] apiData)
 		{
-			TrackingId = trackingId;
+			TrackingIds = trackingIds;
 			ApiData = apiData;
 		}
 
-		public Guid TrackingId { get; }
-		public ApiData ApiData { get; }
+		public Guid[] TrackingIds { get; }
+		public ApiData[] ApiData { get; }
 	}
 }

@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using KCVDB.Client.Clients.Utilities.Http;
 
 namespace KCVDB.Client.Clients.Senders.Raw
 {
@@ -16,6 +17,8 @@ namespace KCVDB.Client.Clients.Senders.Raw
 		public string SessionId { get; }
 		public Uri BaseUri { get; }
 		public HttpClient HttpClient { get; }
+
+		public bool SupportsMultiPost { get; } = false;
 
 		public RawApiDataSender(
 			Uri baseUri,
@@ -32,13 +35,19 @@ namespace KCVDB.Client.Clients.Senders.Raw
 			HttpClient = new HttpClient();
 		}
 
+		public Task<ISentApiData> SendData(IEnumerable<ApiData> apiData)
+		{
+			throw new NotSupportedException();
+		}
+
 		public async Task<ISentApiData> SendData(ApiData data)
 		{
 			if (data == null) { throw new ArgumentNullException(nameof(data)); }
 
 			// Create request URI
 			var uriBuilder = new UriBuilder(BaseUri);
-			uriBuilder.Path = SendSingleDataRequestPath;
+			var basePath = uriBuilder.Path.TrimEnd('/');
+			uriBuilder.Path = basePath + "/" + SendSingleDataRequestPath.TrimStart('/');
 			var requestUri = uriBuilder.Uri;
 
 			// Create content

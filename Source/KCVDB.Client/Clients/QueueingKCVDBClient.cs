@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -117,7 +118,6 @@ namespace KCVDB.Client.Clients
 						shouldWait = Queue.Count == 0;
 					}
 
-
 					if (shouldWait) {
 						try {
 							SendEvent.WaitOne();
@@ -127,8 +127,7 @@ namespace KCVDB.Client.Clients
 							break;
 						}
 					}
-
-
+					
 					if (cancellationToken.IsCancellationRequested) { break; }
 
 					lock (QueueLock) {
@@ -137,23 +136,35 @@ namespace KCVDB.Client.Clients
 						}
 					}
 
-					QueueItem item = null;
+					var itemsToSend = new List<QueueItem>();
 					lock (QueueLock) {
-						item = Queue.Peek();
+						if (DataSender.SupportsMultiPost) {
+							itemsToSend.AddRange(Queue);
+						}
+						else {
+							itemsToSend.Add(Queue.Peek());
+						}
 					}
 
-					if (item == null) { continue; }
-					var data = item.ApiData;
-					var trackingId = item.TrackingId;
+					if (!itemsToSend.Any()) { continue; }
 
+					var dataArray = itemsToSend.Select(x => x.ApiData).ToArray();
+					var trackingIds = itemsToSend.Select(x => x.TrackingId).ToArray();
 					try {
-						this.ApiDataSending?.Invoke(this, new ApiDataSendingEventArgs(trackingId, data));
-						var contentString = await DataSender.SendData(data);
-						this.ApiDataSent?.Invoke(this, new ApiDataSentEventArgs(trackingId, data, contentString));
+						this.ApiDataSending?.Invoke(this, new ApiDataSendingEventArgs(trackingIds, dataArray));
 
+						ISentApiData sentApiData = null;
+						if (DataSender.SupportsMultiPost) {
+							sentApiData = await DataSender.SendData(dataArray);
+						}
+						else {
+							sentApiData = await DataSender.SendData(dataArray[0]);
+						}
+
+						this.ApiDataSent?.Invoke(this, new ApiDataSentEventArgs(trackingIds, dataArray, sentApiData));
 					}
 					catch (DataSendingException ex) {
-						this.SendingError?.Invoke(this, new SendingErrorEventArgs(trackingId, "Failed sending API data.", data, ex));
+						this.SendingError?.Invoke(this, new SendingErrorEventArgs(trackingIds, "Failed sending API data.", dataArray, ex));
 						switch (ex.Reason) {
 							case SendingErrorReason.ServerError:
 								timeToDelayInMs = rand.Next(MinDelayAfterServerkErrorInMs, MaxDelayAfterServerkErrorInMs);
@@ -169,12 +180,12 @@ namespace KCVDB.Client.Clients
 						break;
 					}
 					catch (Exception ex) {
-						this.InternalError?.Invoke(this, new InternalErrorEventArgs(trackingId, "Failed to something before sending API data.", ex, data));
+						this.InternalError?.Invoke(this, new InternalErrorEventArgs(trackingIds, "Failed to something before sending API data.", ex, dataArray));
 						continue;
 					}
 
 					lock (QueueLock) {
-						if (Queue.Count > 0) {
+						for (int i = 0; i < itemsToSend.Count && Queue.Count > 0; i++) {
 							Queue.Dequeue();
 						}
 					}
