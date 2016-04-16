@@ -5,12 +5,12 @@ namespace KCVDB.Client
 	public sealed class SendingErrorEventArgs : EventArgs
 	{
 		public SendingErrorEventArgs(
-			Guid trackingId,
+			Guid[] trackingIds,
 			string message,
-			ApiData apiData,
+			ApiData[] apiData,
 			DataSendingException exception)
 		{
-			TrackngId = trackingId;
+			TrackngIds = trackingIds;
 			Message = message;
 			ApiData = apiData;
 			Exception = exception;
@@ -19,7 +19,7 @@ namespace KCVDB.Client
 		/// <summary>
 		/// Gets the ID to track sending data.
 		/// </summary>
-		public Guid TrackngId { get; }
+		public Guid[] TrackngIds { get; }
 
 		/// <summary>
 		/// Gets the api call data
@@ -27,7 +27,7 @@ namespace KCVDB.Client
 		/// <remarks>
 		/// This might be NULL.
 		/// </remarks>
-		public ApiData ApiData { get; }
+		public ApiData[] ApiData { get; }
 
 		/// <summary>
 		/// Gets the error message

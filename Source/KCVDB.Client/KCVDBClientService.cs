@@ -1,5 +1,6 @@
 ﻿using System;
 using KCVDB.Client.Clients;
+using KCVDB.Client.Clients.Senders.Gzip;
 using KCVDB.Client.Clients.Senders.Raw;
 
 namespace KCVDB.Client
@@ -32,7 +33,8 @@ namespace KCVDB.Client
 			return CreateClient(
 				agentId,
 				sessionId,
-				new RawApiDataSenderFactory(),
+				//new RawApiDataSenderFactory(),
+				new GzipApiDataSenderFactory(),
 				KCVDBClientBehavior.Queueing);
 		}
 
@@ -56,9 +58,6 @@ namespace KCVDB.Client
 				case KCVDBClientBehavior.Queueing:
 					return new QueueingKCVDBClient(apiParser, dataSender);
 
-				case KCVDBClientBehavior.SendImmediately:
-					return new ImmediatelyKCVDBClient(apiParser, dataSender);
-
 				default:
 					throw new ArgumentException($"Client behavior {clientBehaivor} is not supported.");
 			}
@@ -67,7 +66,6 @@ namespace KCVDB.Client
 
 	internal enum KCVDBClientBehavior
 	{
-		Queueing,
-		SendImmediately
+		Queueing
 	}
 }
