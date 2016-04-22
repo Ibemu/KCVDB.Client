@@ -11,9 +11,10 @@ namespace KCVDB.Client.Clients
 	sealed class QueueingKCVDBClient : IKCVDBClient
 	{
 		static int MinDelayAfterNetworkErrorInMs { get; } = 1000;
-		static int MaxDelayAfterNetworkErrorInMs { get; } = 3000;
-		static int MinDelayAfterServerkErrorInMs { get; } = 500;
-		static int MaxDelayAfterServerkErrorInMs { get; } = 1500;
+		static int MaxDelayAfterNetworkErrorInMs { get; } = 4000;
+		static int MinDelayAfterServerkErrorInMs { get; } = 1000;
+		static int MaxDelayAfterServerkErrorInMs { get; } = 4000;
+		static int MaxChunkSize { get; } = 10;
 
 		object QueueLock { get; } = new object();
 		object ThreadLock { get; } = new object();
@@ -139,7 +140,7 @@ namespace KCVDB.Client.Clients
 					var itemsToSend = new List<QueueItem>();
 					lock (QueueLock) {
 						if (DataSender.SupportsMultiPost) {
-							itemsToSend.AddRange(Queue);
+							itemsToSend.AddRange(Queue.Take(MaxChunkSize));
 						}
 						else {
 							itemsToSend.Add(Queue.Peek());
