@@ -10,11 +10,15 @@ namespace KCVDB.Client.Clients
 {
 	sealed class QueueingKCVDBClient : IKCVDBClient
 	{
-		static int MinDelayAfterNetworkErrorInMs { get; } = 1000;
-		static int MaxDelayAfterNetworkErrorInMs { get; } = 4000;
-		static int MinDelayAfterServerkErrorInMs { get; } = 1000;
-		static int MaxDelayAfterServerkErrorInMs { get; } = 4000;
+		static TimeSpan MinDelayAfterNetworkError { get; } = TimeSpan.FromSeconds(1);
+		static TimeSpan MaxDelayAfterNetworkError { get; } = TimeSpan.FromMinutes(10);
+		static TimeSpan NetworkErrorDelayIncrement { get; } = TimeSpan.FromSeconds(10);
+		static TimeSpan MinDelayAfterServerkError { get; } = TimeSpan.FromSeconds(1);
+		static TimeSpan MaxDelayAfterServerkError { get; } = TimeSpan.FromMinutes(20);
+		static TimeSpan ServerErrorDelayIncrement { get; } = TimeSpan.FromSeconds(20);
+
 		static int MaxChunkSize { get; } = 10;
+		static int MaxQueueLength { get; } = 2000;
 
 		object QueueLock { get; } = new object();
 		object ThreadLock { get; } = new object();
@@ -64,12 +68,21 @@ namespace KCVDB.Client.Clients
 			// Enqueue api data
 			try {
 				if (apiData != null) {
-					lock (QueueLock) {
-						var item = new QueueItem {
-							TrackingId = actualTrackingId,
-							ApiData = apiData
-						};
-						Queue.Enqueue(item);
+					try {
+						lock (QueueLock) {
+							if (Queue.Count >= MaxQueueLength) {
+								new InvalidOperationException("Reached to maximum queue size limit.");
+							}
+
+							var item = new QueueItem {
+								TrackingId = actualTrackingId,
+								ApiData = apiData
+							};
+							Queue.Enqueue(item);
+						}
+					}
+					catch (Exception ex) {
+						this.FatalError?.Invoke(this, new FatalErrorEventArgs("Failed to enqueue the api data.", ex));
 					}
 				}
 			}
@@ -94,24 +107,28 @@ namespace KCVDB.Client.Clients
 			return Task.FromResult(actualTrackingId);
 		}
 
+		enum TransferResult {
+			Succeeded = 0,
+			NetworkError = 1,
+			ServerError = 2,
+		}
+
 
 		public async Task SendingThread(CancellationToken cancellationToken)
 		{
 			try {
-				int timeToDelayInMs = 0;
+				var lastResult = TransferResult.Succeeded;
+				var timeToDelay = TimeSpan.Zero;
 				var rand = new Random();
 				while (!cancellationToken.IsCancellationRequested) {
 					bool shouldWait = false;
 
-					if (timeToDelayInMs != 0) {
+					if (timeToDelay != TimeSpan.Zero) {
 						try {
-							await Task.Delay(timeToDelayInMs, cancellationToken);
+							await Task.Delay(timeToDelay, cancellationToken);
 						}
 						catch (OperationCanceledException) {
 							break;
-						}
-						finally {
-							timeToDelayInMs = 0;
 						}
 					}
 
@@ -162,17 +179,40 @@ namespace KCVDB.Client.Clients
 							sentApiData = await DataSender.SendData(dataArray[0]);
 						}
 
+						lastResult = TransferResult.Succeeded;
+						timeToDelay = TimeSpan.Zero;
+
 						this.ApiDataSent?.Invoke(this, new ApiDataSentEventArgs(trackingIds, dataArray, sentApiData));
 					}
 					catch (DataSendingException ex) {
 						this.SendingError?.Invoke(this, new SendingErrorEventArgs(trackingIds, "Failed sending API data.", dataArray, ex));
 						switch (ex.Reason) {
 							case SendingErrorReason.ServerError:
-								timeToDelayInMs = rand.Next(MinDelayAfterServerkErrorInMs, MaxDelayAfterServerkErrorInMs);
+								if (lastResult == TransferResult.ServerError) {
+									timeToDelay += ServerErrorDelayIncrement;
+									if (timeToDelay > MaxDelayAfterServerkError) {
+										timeToDelay = MaxDelayAfterServerkError;
+									}
+								}
+								else {
+									timeToDelay = MinDelayAfterServerkError;
+								}
+								lastResult = TransferResult.ServerError;
 								break;
 
+							case SendingErrorReason.HttpProtocolError:
 							case SendingErrorReason.NetworkError:
-								timeToDelayInMs = rand.Next(MinDelayAfterNetworkErrorInMs, MaxDelayAfterNetworkErrorInMs);
+							case SendingErrorReason.Unknown:
+								if (lastResult == TransferResult.NetworkError) {
+									timeToDelay += NetworkErrorDelayIncrement;
+									if (timeToDelay > MaxDelayAfterNetworkError) {
+										timeToDelay = MaxDelayAfterNetworkError;
+									}
+								}
+								else {
+									timeToDelay = MinDelayAfterNetworkError;
+								}
+								lastResult = TransferResult.NetworkError;
 								break;
 						}
 						continue;
